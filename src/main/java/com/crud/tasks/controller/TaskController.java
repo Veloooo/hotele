@@ -14,19 +14,20 @@ public class TaskController {
     public List<TaskDto> getTasks() {
         return new ArrayList<>();
     }
+
     @GetMapping
     public TaskDto getTask(Long taskId) {
         return new TaskDto(1L, "test title", "test_content");
     }
+
     @DeleteMapping
-    public void deleteTask(Long taskId) {
-    }
+    public void deleteTask(Long taskId) {}
+
     @PutMapping
     public TaskDto updateTask(TaskDto taskDto) {
         return new TaskDto(1L, "Edited test title", "Test content");
     }
-    @PostMapping
-    public void createTask(TaskDto taskDto) {
 
-    }
+    @PostMapping
+    public void createTask(TaskDto taskDto) {}
 }
