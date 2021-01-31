@@ -5,6 +5,8 @@ import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -29,15 +31,34 @@ public class TaskController {
         return taskMapper.mapToTaskDtoList(tasks);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getTasksByID")
-    public List<TaskDto> getTasksByID() {
-        List<Task> tasks = service.getTasksByID();
-        return taskMapper.mapToTaskDtoList(tasks);
+    @RequestMapping(method = RequestMethod.GET, value = "getTask")
+    public TaskDto getTask(@RequestParam Long taskId) throws TaskNotFoundException {
+        return taskMapper.mapToTaskDto(
+                service.getTask(taskId).orElseThrow(TaskNotFoundException::new)
+        );
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "createTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createTask(@RequestBody TaskDto taskDto) {
+        Task task = taskMapper.mapToTask(taskDto);
+        service.saveTask(task);
+    }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "updateTask",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public TaskDto updateTask(@RequestBody TaskDto taskDto) {
+        Task task = taskMapper.mapToTask(taskDto);
+        Task savedTask = service.saveTask(task);
+        return taskMapper.mapToTaskDto(savedTask);
+    }
 
-
+        @RequestMapping(method=RequestMethod.DELETE, value = "deleteTask", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteTask(@RequestBody TaskDto taskDto) {
+        service.deleteTask(taskDto.getId());
+    }
+    @RequestMapping(method = RequestMethod.DELETE, value = "deleteAll")
+    public void deleteTasks() {
+        service.deleteTasks();
+    }
 
 
 //    @RequestMapping(method = RequestMethod.GET, value = "getTasks")
@@ -73,7 +94,6 @@ public class TaskController {
 //
 //    @DeleteMapping(value="clearTasks")
 //    public void clearTasks(String taskTitle){}
-
 
 
 }

@@ -14,13 +14,14 @@ import javax.persistence.Id;
 @Getter
 @Entity(name = "tasks")
 public class Task {
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column()
+    @Column(name="name")
     private String title;
 
-    @Column()
+    @Column(name="description")
     private String content;
 }
