@@ -51,9 +51,11 @@ public class TaskController {
         return taskMapper.mapToTaskDto(savedTask);
     }
 
-        @RequestMapping(method=RequestMethod.DELETE, value = "deleteTask", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteTask(@RequestBody TaskDto taskDto) {
-        service.deleteTask(taskDto.getId());
+        @RequestMapping(method=RequestMethod.DELETE, value = "deleteTask")
+    public void deleteTask(@RequestParam Long taskId) throws TaskNotFoundException{
+        TaskDto taskdto=taskMapper.mapToTaskDto(service.getTask(taskId).orElseThrow(TaskNotFoundException::new));
+        Task task = taskMapper.mapToTask(taskdto);
+        service.deleteTask(task);
     }
     @RequestMapping(method = RequestMethod.DELETE, value = "deleteAll")
     public void deleteTasks() {
