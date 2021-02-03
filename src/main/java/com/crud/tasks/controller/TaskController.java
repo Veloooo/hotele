@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/v1/task")
 public class TaskController {
 
@@ -60,6 +61,8 @@ public class TaskController {
     public void deleteTasks() {
         service.deleteTasks();
     }
+
+
 
 
 //    @RequestMapping(method = RequestMethod.GET, value = "getTasks")
