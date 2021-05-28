@@ -1,10 +1,10 @@
-package com.crud.hotels.domain;
+package com.crud.hotels.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class HotelDto {
+public class ReservationDto {
     private Long id;
 }

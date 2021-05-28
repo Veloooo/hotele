@@ -13,7 +13,6 @@ import javax.persistence.Id;
 @Getter
 @Entity(name = "reservations")
 public class Reservation {
-
     @Id
     @GeneratedValue
     private Long id;

@@ -12,10 +12,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class SimpleEmailServiceTest {
+class EmailServiceTest {
 
     @InjectMocks
-    private SimpleEmailService simpleEmailService;
+    private EmailService emailService;
 
     @Mock
     private JavaMailSender javaMailSender;
@@ -35,7 +35,7 @@ class SimpleEmailServiceTest {
         mailMessage.setText(mail.getMessage());
 
         //When
-        simpleEmailService.send(mail);
+        emailService.send(mail);
 
         //Then
         verify(javaMailSender, times(1)).send(mailMessage);
@@ -57,7 +57,7 @@ class SimpleEmailServiceTest {
         mailMessage.setCc(mail.getToCc());
 
         //When
-        simpleEmailService.send(mail);
+        emailService.send(mail);
 
         //Then
         verify(javaMailSender, times(1)).send(mailMessage);

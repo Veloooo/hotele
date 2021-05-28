@@ -18,6 +18,4 @@ public interface ReservationRepository extends CrudRepository<Reservation, Long>
     void deleteById(Long taskId);
 
     void deleteAll();
-
-
 }

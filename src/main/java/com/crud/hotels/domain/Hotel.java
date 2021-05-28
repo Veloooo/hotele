@@ -1,23 +1,30 @@
 package com.crud.hotels.domain;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Entity(name = "hotels")
+@Setter
+@Entity
+@Table(name = "hotels")
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Hotel {
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column
+    @NonNull
+    private String name;
 
+    @Column
+    @NonNull
+    private String country;
+
+    @Column
+    @NonNull
+    private String city;
 }

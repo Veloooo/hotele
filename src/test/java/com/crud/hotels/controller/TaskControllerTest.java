@@ -1,6 +1,6 @@
 package com.crud.hotels.controller;
 
-import com.crud.hotels.service.DbService;
+import com.crud.hotels.service.HotelService;
 import com.google.gson.Gson;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class TaskControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    DbService service;
+    HotelService service;
 
     @MockBean
     TaskMapper mapper;

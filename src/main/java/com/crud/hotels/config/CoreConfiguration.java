@@ -25,6 +25,7 @@ public class CoreConfiguration {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.crud.hotels.controller"))
                 .paths(PathSelectors.any())
-                .build(); }
+                .build();
+    }
 }
 

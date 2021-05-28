@@ -1,12 +1,7 @@
 package com.crud.hotels.controller;
 
-import com.crud.hotels.domain.Hotel;
-import com.crud.hotels.domain.HotelDto;
-import com.crud.hotels.domain.Reservation;
-import com.crud.hotels.domain.ReservationDto;
-import com.crud.hotels.mapper.HotelMapper;
-import com.crud.hotels.mapper.ReservationMapper;
-import com.crud.hotels.service.DbService;
+import com.crud.hotels.dto.ReservationDto;
+import com.crud.hotels.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,17 +12,13 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/v1/hotels/reservations")
-public class ReservationsController {
+public class ReservationController {
 
-    private final DbService service;
-    private final HotelMapper hotelMapper;
-    private final ReservationMapper reservationMapper;
+    private final ReservationService reservationService;
 
     @Autowired
-    public ReservationsController(DbService service, HotelMapper hotelMapper, ReservationMapper reservationMapper) {
-        this.service = service;
-        this.hotelMapper = hotelMapper;
-        this.reservationMapper = reservationMapper;
+    public ReservationController(ReservationService reservationService) {
+        this.reservationService = reservationService;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
@@ -35,7 +26,7 @@ public class ReservationsController {
         /**
          * Zwrócenie rezerwacji
          */
-        return new ReservationDto(1L);
+       return null;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
@@ -48,28 +39,26 @@ public class ReservationsController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createReservation(@RequestBody ReservationDto reservationDto) {
-        service.saveReservation(reservationMapper.mapToReservation(reservationDto));
+       return;
     }
 
 
     @RequestMapping(method = RequestMethod.PUT, value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ReservationDto editReservation(@RequestBody ReservationDto reservationDto) {
-        Reservation reservation = reservationMapper.mapToReservation(reservationDto);
-        Reservation savedReservation = service.saveReservation(reservation);
-        return reservationMapper.mapToReservationDto(savedReservation);
+        return null;
     }
 
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/")
-    public void deleteReservation(@PathVariable Long id) {
-        service.deleteReservation(id);
+    public void deleteReservation(@PathVariable Long reservationId) {
+        return;
     }
 
     /**
      * ?????????????????????????????????????????
      * GET
      * /hotels/reservations/{id}/share - wysłanie rezerwacji na ustalony host i port
-     * ?????????????????????????????????????????
+     * To bedzie oddzielny kontroler
      */
 
 }
