@@ -1,3 +1,4 @@
+/*
 package com.crud.hotels.controller;
 
 import com.crud.hotels.trello.facade.TrelloFacade;
@@ -100,3 +101,5 @@ class TrelloControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.shortUrl", Matchers.is("http://test.com")));
     }
 }
+
+ */

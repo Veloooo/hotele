@@ -33,7 +33,7 @@ public class HotelService {
 
     @Transactional(readOnly = true)
     public Hotel getHotelById(Long hotelId) {
-        return hotelRepository.findById(hotelId).orElseThrow(() -> new HotelNotFoundException());
+        return hotelRepository.findById(hotelId).orElseThrow(HotelNotFoundException::new);
     }
 
     @Transactional
