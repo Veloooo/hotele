@@ -8,10 +8,5 @@ import java.io.IOException;
 
 @Service
 public class RequestsExecutorService {
-    OkHttpClient client = new OkHttpClient();
-
-    public String execute(Request request) throws IOException {
-        return client.newCall(request).execute().body().string();
-    }
 
 }

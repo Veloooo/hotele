@@ -1,40 +1,46 @@
 package com.crud.hotels.service;
 
-import jdk.nashorn.internal.ir.annotations.Ignore;
+import com.crud.hotels.model.weather.Items;
+import com.crud.hotels.model.weather.WeatherInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Currency;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.TimeZone;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WeatherServiceTest {
 
-    @Autowired
+    @InjectMocks
     private WeatherService weatherService;
 
-    @MockBean
-    private RequestsExecutorService executorService;
-
-
     @Test
-    @Ignore
-    public void propertiesShouldBeLoaded(){
-        assertThat(weatherService.getApiForecastUrl()).isNotBlank();
-        assertThat(weatherService.getApiHost()).isNotBlank();
-        assertThat(weatherService.getApiKey()).isNotBlank();
+    public void shouldReturnAnything() {
+        String data = weatherService.getDataPrettyPrinted(weatherService.forecastFor5Days("LONDON", "UK"));
+        assertThat(data).isNotBlank();
+        System.out.println(data);
     }
 
     @Test
-    public void shouldReturnAnything(){
-        assertThat(weatherService.forecastFor30Days("London")).isNotBlank();
+    public void shouldReturnDataForCityForGivenDay() {
+        List<Items> data = weatherService.getDataForCityForDay("Krakow", "PL", LocalDateTime.now());
+        assertThat(data.stream().allMatch(d -> LocalDateTime.ofInstant(Instant.ofEpochSecond(d.getDt()),
+                TimeZone.getDefault().toZoneId()).getDayOfYear() == LocalDateTime.now().getDayOfYear())).isTrue();
+    }
+
+    @Test
+    public void shouldBeFilteredByDays() {
+        WeatherInfo info = weatherService.forecastFor5Days("Krakow", "PL");
+        List<Items> data = weatherService.getDataForCityForDay("Krakow", "PL", LocalDateTime.now().plusDays(1).withHour(0));
+        assertThat(info.getList().size() / 5).isEqualTo(data.size());
     }
 
 }
