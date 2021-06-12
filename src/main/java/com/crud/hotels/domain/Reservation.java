@@ -22,4 +22,8 @@ public class Reservation {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "room_id")
+    private Room room;
 }
