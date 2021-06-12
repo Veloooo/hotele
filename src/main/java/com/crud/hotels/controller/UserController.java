@@ -2,8 +2,10 @@ package com.crud.hotels.controller;
 
 import com.crud.hotels.domain.Hotel;
 import com.crud.hotels.dto.HotelDto;
+import com.crud.hotels.dto.UserDto;
 import com.crud.hotels.exception.HotelNotFoundException;
 import com.crud.hotels.service.HotelService;
+import com.crud.hotels.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,18 +17,30 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/v1/hotels")
-public class HotelController {
-    private final HotelService hotelService;
+@RequestMapping("/v1/users")
+public class UserController {
+
+    private final UserService userService;
 
     @Autowired
-    public HotelController(HotelService hotelService) {
-        this.hotelService = hotelService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping
-    public List<Hotel> getHotels() {
-        return hotelService.getAllHotels();
+    @PostMapping(path="/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void login(@Valid @RequestBody UserDto userDto) {
+        userService.login(userDto);
+    }
+
+    @PostMapping(path="/logout", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void logout(@Valid @RequestBody UserDto userDto) {
+        userService.logout(userDto);
+    }
+
+
+    @GetMapping(path = "/{id}")
+    public UserDto getUser() {
+        return userService.getAllHotels();
     }
 
     @GetMapping(value = "/{hotelId}")
@@ -34,11 +48,6 @@ public class HotelController {
         return hotelService.getHotelById(hotelId);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public void createHotel(@Valid @RequestBody HotelDto hotelDto) {
-        hotelService.createHotel(hotelDto);
-    }
 
     @PutMapping(path = "/{hotelId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Hotel editHotel(@Valid @RequestBody HotelDto hotelDto, @PathVariable Long hotelId) {

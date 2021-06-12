@@ -21,7 +21,7 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @GetMapping(path = "/{id}")
     public ReservationDto getReservation(@PathVariable Long reservationId) {
         /**
          * Zwrócenie rezerwacji
@@ -29,7 +29,7 @@ public class ReservationController {
        return null;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @GetMapping(path = "/")
     public List<ReservationDto> getReservations() {
         /**
          * Zwrócenie wszystkich rezerwacji ??????????????????????????????????????
@@ -37,19 +37,19 @@ public class ReservationController {
         return new ArrayList<>();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createReservation(@RequestBody ReservationDto reservationDto) {
        return;
     }
 
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ReservationDto editReservation(@RequestBody ReservationDto reservationDto) {
         return null;
     }
 
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/")
+    @DeleteMapping(path = "/")
     public void deleteReservation(@PathVariable Long reservationId) {
         return;
     }
