@@ -1,17 +1,16 @@
 package com.crud.hotels.controller;
 
-import com.crud.hotels.domain.Hotel;
 import com.crud.hotels.dto.HotelDto;
-import com.crud.hotels.exception.HotelNotFoundException;
 import com.crud.hotels.service.HotelService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -19,19 +18,25 @@ import java.util.List;
 public class HotelController {
     private final HotelService hotelService;
 
+    private final ModelMapper modelMapper;
+
     @Autowired
-    public HotelController(HotelService hotelService) {
+    public HotelController(HotelService hotelService, ModelMapper modelMapper) {
         this.hotelService = hotelService;
+        this.modelMapper = modelMapper;
     }
 
     @GetMapping
-    public List<Hotel> getHotels() {
-        return hotelService.getAllHotels();
+    public List<HotelDto> getHotels() {
+        return hotelService.getAllHotels()
+                .stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDto.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping(value = "/{hotelId}")
-    public Hotel getHotel(@PathVariable Long hotelId) {
-        return hotelService.getHotelById(hotelId);
+    public HotelDto getHotel(@PathVariable Long hotelId) {
+        return modelMapper.map(hotelService.getHotelById(hotelId), HotelDto.class);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -41,31 +46,25 @@ public class HotelController {
     }
 
     @PutMapping(path = "/{hotelId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Hotel editHotel(@Valid @RequestBody HotelDto hotelDto, @PathVariable Long hotelId) {
-        return hotelService.editHotel(hotelId, hotelDto);
+    public HotelDto editHotel(@Valid @RequestBody HotelDto hotelDto, @PathVariable Long hotelId) {
+        return modelMapper.map(hotelService.editHotel(hotelId, hotelDto), HotelDto.class);
     }
 
     @DeleteMapping(path = "/{hotelId}")
-    public void editHotel(@PathVariable Long hotelId) {
-         hotelService.deleteHotel(hotelId);
-    }
-
-    @GetMapping(path = "/{hotelId}/available")
-    public boolean getAvailable(@PathVariable Long hotelId) throws HotelNotFoundException {
-        /**
-         * Zwrócenie czy w danym hotelu są wolne pokoje
-         *
-         * Tu trzeba się jeszcze zastanowić o dodanie zapytania o ilu osobowe i w jakim terminie
-         */
-        return true;
+    public void deleteHotel(@PathVariable Long hotelId) {
+        hotelService.deleteHotel(hotelId);
     }
 
     @GetMapping(path = "/available")
     public List<HotelDto> getHotelsWithAvailableRooms() {
-        /**
-         * Zwrócenie listy hoteli w których są dostępne pokoje według zadanych kryteriów
-         */
-        return new ArrayList<>();
+        return hotelService.getAllHotelsWithFreeRooms()
+                .stream()
+                .map(hotel -> modelMapper.map(hotel, HotelDto.class))
+                .collect(Collectors.toList());
     }
 
+    @GetMapping(path = "/{hotelId}/available")
+    public boolean checkIfHotelAvailable(@PathVariable Long hotelId) {
+        return hotelService.checkIfHotelAvailable(hotelId);
+    }
 }

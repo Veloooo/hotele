@@ -1,5 +1,6 @@
 package com.crud.hotels.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,6 +27,11 @@ public class CoreConfiguration {
                 .apis(RequestHandlerSelectors.basePackage("com.crud.hotels.controller"))
                 .paths(PathSelectors.any())
                 .build();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }
 

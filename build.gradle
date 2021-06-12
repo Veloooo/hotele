@@ -35,6 +35,8 @@ dependencies {
 	testImplementation 'com.google.code.gson:gson'
 	testCompile("org.assertj:assertj-core:3.11.1")
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.4.4'
+
 }
 
 test {

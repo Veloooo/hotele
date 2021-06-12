@@ -4,11 +4,11 @@ package com.crud.hotels.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "hotels")
+@Entity(name = "hotels")
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class Hotel {
@@ -27,4 +27,21 @@ public class Hotel {
     @Column
     @NonNull
     private String city;
+
+    @Column
+    @NonNull
+    private Integer totalRooms;
+
+    @Column
+    @NonNull
+    private Integer freeRooms;
+
+    @OneToOne(mappedBy = "hotel")
+    private Reservation reservation;
+
+    @OneToMany(mappedBy = "hotel",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    List<Room> rooms;
 }

@@ -7,8 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
-@Table(name = "users")
+@Entity(name = "users")
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -25,8 +24,7 @@ public class User {
     @NonNull
     private String password;
 
-    @OneToMany(
-            mappedBy = "user",
+    @OneToMany(mappedBy = "user",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
